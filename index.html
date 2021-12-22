@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Request</title>
+    </head>
+
+    <body>
+        <button onclick="httpGet('https://static.ngnrs.io/test/prices')">Let's start</button>
+        <p id = "output"></p>
+        <script>
+            let data;
+            function httpGet(theUrl) {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+                xmlHttp.send( null );
+                data = xmlHttp.responseText;
+                let jData=JSON.parse(data);
+                let prices=jData['data']['prices'];
+                for (let i = 0 ;i<prices.length;i++){
+                    let mid=(prices[i]['buy'] + prices[i]['sell'])/200;
+                    let name = prices[i]['pair'];
+                    let sym = name.substr(name.length - 3, 3);
+                    let line = document.createElement("br");
+                    document.getElementById("output").append("Mid price for " + name + " is " + mid + " " + sym + ".");
+                    document.getElementById("output").appendChild(line);
+                }
+                return xmlHttp.responseText;
+            }
+        </script>
+    </body>
+</html>
